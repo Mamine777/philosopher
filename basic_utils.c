@@ -3,24 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   basic_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mokariou <mokariou@student.s19.be>         +#+  +:+       +#+        */
+/*   By: mokariou <mokariou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/07 19:47:17 by mokariou          #+#    #+#             */
-/*   Updated: 2024/12/07 19:57:12 by mokariou         ###   ########.fr       */
+/*   Updated: 2024/12/08 14:30:55 by mokariou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-int	is_all_num(char *c)
+void	err_exit(char *arg)
 {
-	if ((c <= '0' && c >= '9') || c != '-' || c != '+')
-		return (1);
-	return (0);
-}
-int	ft_atoi(void *content)
-{
-	while (*content)
-		if (is_all_num((char)content++))
-			return (0);
+	printf("%s\n", arg);
+	exit(EXIT_FAILURE);
 }
