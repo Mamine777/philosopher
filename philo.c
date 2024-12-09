@@ -3,14 +3,21 @@
 /*                                                        :::      ::::::::   */
 /*   philo.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mokariou <mokariou@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mokariou <mokariou@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/07 19:32:32 by mokariou          #+#    #+#             */
-/*   Updated: 2024/12/09 15:17:09 by mokariou         ###   ########.fr       */
+/*   Updated: 2024/12/09 16:17:48 by mokariou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
+
+void	simulation(void *data)
+{
+	t_philosopher	*philo;
+
+	philo = (t_philosopher *)data;
+}
 
 void	start_equaz(t_table *table)
 {
@@ -30,6 +37,7 @@ void	start_equaz(t_table *table)
 				&table->philo[i], CREATE);
 		}
 	}
+	//threads made succefully 
 }
 
 int	main(int ac, char **av)
