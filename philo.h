@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philo.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mokariou <mokariou@student.s19.be>         +#+  +:+       +#+        */
+/*   By: mokariou <mokariou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/07 16:32:52 by mokariou          #+#    #+#             */
-/*   Updated: 2024/12/09 16:18:44 by mokariou         ###   ########.fr       */
+/*   Updated: 2024/12/09 20:38:01 by mokariou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ typedef struct t_table
 	long			time_to_sleep;
 	long			time_to_die;
 	long 			nbr_limits_meal;// if flag is -1 means we dont have the argument
-	long			start_of_simulation;
+	long long		start_of_simulation;
 	int 			end_simulation; // philo dies
 	int				all_threads_ready;//bool
 	pthread_mutex_t	table_mutex;//while reading from table avoid races
@@ -72,6 +72,15 @@ void				handle_thread(pthread_t *thread, void *(*foo)(void *),
 						void *data, t_code code);
 //*****//parsing
 void				check_table(t_table *table, char **av);
+uint16_t			convert_time(void);
+void	think(void);
+void	sleep_philo(t_philosopher *philo);
+void	eat(t_philosopher *philo);
 //*****//
 void				init_info(t_table *table);
+int 				simulation_finished(t_table *table);
+void 				set_bool(pthread_mutex_t *mutex, int *value);
+void				set_bool(pthread_mutex_t *mutex, int *dest, int value);
+long 				get_bool(pthread_mutex_t *mutex, int *value);
+int 				get_bool(pthread_mutex_t *mutex, int *value);
 #endif

@@ -6,7 +6,7 @@
 /*   By: mokariou <mokariou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/08 13:59:34 by mokariou          #+#    #+#             */
-/*   Updated: 2024/12/08 18:07:27 by mokariou         ###   ########.fr       */
+/*   Updated: 2024/12/09 20:35:14 by mokariou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ static void	handle_mutex_err(int status, t_code code)
 void	handle_mutex(pthread_mutex_t *mutex, t_code code)
 {
 	if (code == LOCK)
-		handle_mutex(pthread_mutex_lock(mutex), code);
+		pthread_mutex_lock(mutex);
 	else if (code == UNLOCK)
 		pthread_mutex_unlock(mutex);
 	else if (code == INIT)
