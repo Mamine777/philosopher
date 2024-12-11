@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philo.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mokariou <mokariou@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mokariou <mokariou@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/07 19:32:32 by mokariou          #+#    #+#             */
-/*   Updated: 2024/12/09 20:54:10 by mokariou         ###   ########.fr       */
+/*   Updated: 2024/12/10 12:31:02 by mokariou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ void	*simulation(void *data)
 		else
 		{
 			handle_mutex(&philo->second_fork->fork, LOCK);
-			handle_mutex(&philo->first_fork->fork, LOCK);	
+			handle_mutex(&philo->first_fork->fork, LOCK);
 		}
 		eat(philo);
 		philo->meals_count++;
