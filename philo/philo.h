@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philo.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mokariou <mokariou@student.s19.be>         +#+  +:+       +#+        */
+/*   By: mokariou <mokariou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/11 12:45:22 by mokariou          #+#    #+#             */
-/*   Updated: 2024/12/11 16:21:04 by mokariou         ###   ########.fr       */
+/*   Updated: 2024/12/11 17:55:55 by mokariou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,8 @@ typedef struct s_philosopher
 	long			last_meal;
 	int				did_he_eat;// bool
 	long			start_simulation;
+	int				count_meals;
+	t_table			*table;
 //////
 	long			eat_time;
 	long			sleep_time;
@@ -49,6 +51,7 @@ typedef struct t_table
 	long			num_philosophers;
 	t_philosopher	philo[200];
 	t_schedule		schedule;
+	int 			stop_simulation;
 }					t_table;
 
 /// error_checking
