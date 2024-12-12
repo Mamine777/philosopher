@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philo.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mokariou <mokariou@student.s19.be>         +#+  +:+       +#+        */
+/*   By: mokariou <mokariou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/11 12:45:22 by mokariou          #+#    #+#             */
-/*   Updated: 2024/12/12 13:08:50 by mokariou         ###   ########.fr       */
+/*   Updated: 2024/12/12 17:16:32 by mokariou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ typedef struct s_table
 void				err_exit(const char *str);
 ///*****utils
 int					ft_atoi(const char *str);
-uint16_t			get_time(void);
+long			get_time(void);
 void				u_got_knocked_out(long long ms);
 
 /// main

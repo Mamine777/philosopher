@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mokariou <mokariou@student.s19.be>         +#+  +:+       +#+        */
+/*   By: mokariou <mokariou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/11 13:05:19 by mokariou          #+#    #+#             */
-/*   Updated: 2024/12/12 15:26:23 by mokariou         ###   ########.fr       */
+/*   Updated: 2024/12/12 17:23:41 by mokariou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,16 +71,9 @@ void	*routine(void *arg)
 		}
 		pthread_mutex_unlock(&philo->table->lock);
 		printf("philosopher %d is thinking\n", philo->id);
-		if (philo->id % 2 == 0)
-		{
-			first_fork = philo->right_fork;
-			second_fork = philo->left_fork;
-		}
-		else
-		{
-			first_fork = philo->left_fork;
-			second_fork = philo->right_fork;
-		}
+		first_fork = philo->left_fork;
+		second_fork = philo->right_fork;
+
 		pthread_mutex_lock(first_fork);
 		printf("philosopher %d has taken a fork\n", philo->id);
 		pthread_mutex_lock(second_fork);
@@ -95,7 +88,7 @@ void	*routine(void *arg)
 		pthread_mutex_unlock(second_fork);
 		printf("philosopher %d is sleeping\n", philo->id);
 		u_got_knocked_out(philo->sleep_time);
-	}
+}
 	return (NULL);
 }
 
@@ -133,7 +126,7 @@ void	*monitor_routine(void *arg)
 			pthread_mutex_unlock(&table->lock);
 			return (NULL);
 		}
-		usleep(1000);
+		usleep(5000);
 	}
 	return (NULL);
 }
@@ -205,9 +198,9 @@ void	init_philo(t_table *table)
 void	fill_table(t_table *table, char **av)
 {
 	table->num_philosophers = ft_atoi(av[1]);
-	table->schedule.time_to_die = ft_atoi(av[2]) * 1e3;
-	table->schedule.eat_time = ft_atoi(av[3]) * 1e3;
-	table->schedule.sleep_time = ft_atoi(av[4]) * 1e3;
+	table->schedule.time_to_die = ft_atoi(av[2]);
+	table->schedule.eat_time = ft_atoi(av[3]);
+	table->schedule.sleep_time = ft_atoi(av[4]);
 	table->stop_simulation = 0;
 	if (av[5])
 		table->schedule.num_of_to_eat = ft_atoi(av[5]);

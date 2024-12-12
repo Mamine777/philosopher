@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils&&timing.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mokariou <mokariou@student.s19.be>         +#+  +:+       +#+        */
+/*   By: mokariou <mokariou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/11 13:16:58 by mokariou          #+#    #+#             */
-/*   Updated: 2024/12/12 15:25:47 by mokariou         ###   ########.fr       */
+/*   Updated: 2024/12/12 17:20:53 by mokariou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ int	ft_atoi(const char *str)
 	return ((int)(res * sign));
 }
 
-uint16_t	get_time(void)
+long	get_time(void)
 {
 	struct timeval	time;
 
@@ -52,10 +52,13 @@ uint16_t	get_time(void)
 
 void u_got_knocked_out(long long ms)
 {
-    long long start = get_time();
+    long long start = get_time() + ms;
 
-    while (get_time() - start < ms)
-    {
+    //while (get_time() - start < ms)
+	long temp = get_time();
+    while (start > get_time())
+	{
+		//printf("time left: %lld\n", start - get_time());
         usleep(100);
     }
 }
