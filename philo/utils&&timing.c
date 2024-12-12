@@ -6,7 +6,7 @@
 /*   By: mokariou <mokariou@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/11 13:16:58 by mokariou          #+#    #+#             */
-/*   Updated: 2024/12/11 16:13:37 by mokariou         ###   ########.fr       */
+/*   Updated: 2024/12/12 15:25:47 by mokariou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,16 +50,12 @@ uint16_t	get_time(void)
 	return (long)((time.tv_sec * 1000) + (time.tv_usec / 1000));
 }
 
-void	u_got_knocked_out(long ms)
+void u_got_knocked_out(long long ms)
 {
-	long	start;
-	long	now;
+    long long start = get_time();
 
-	start = get_time();
-	now = get_time();
-	while (now - start < ms)
-	{
-		sleep(333);
-		now = get_time();
-	}
+    while (get_time() - start < ms)
+    {
+        usleep(100);
+    }
 }

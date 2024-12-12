@@ -6,7 +6,7 @@
 /*   By: mokariou <mokariou@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/11 12:45:22 by mokariou          #+#    #+#             */
-/*   Updated: 2024/12/11 19:45:30 by mokariou         ###   ########.fr       */
+/*   Updated: 2024/12/12 13:08:50 by mokariou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ typedef struct s_table
 	t_philosopher	philo[200];
 	t_schedule		schedule;
 	int				stop_simulation;
-	pthread_mutex_t lock;
+	pthread_mutex_t	lock;
 }					t_table;
 
 /// error_checking
@@ -59,7 +59,7 @@ void				err_exit(const char *str);
 ///*****utils
 int					ft_atoi(const char *str);
 uint16_t			get_time(void);
-void				u_got_knocked_out(long ms);
+void				u_got_knocked_out(long long ms);
 
 /// main
 void				init_philo(t_table *table);
