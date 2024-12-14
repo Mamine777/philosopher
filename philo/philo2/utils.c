@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   utils&&timing.c                                    :+:      :+:    :+:   */
+/*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mokariou <mokariou@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mokariou <mokariou@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/12/11 13:16:58 by mokariou          #+#    #+#             */
-/*   Updated: 2024/12/12 17:20:53 by mokariou         ###   ########.fr       */
+/*   Created: 2024/12/13 13:44:15 by mokariou          #+#    #+#             */
+/*   Updated: 2024/12/14 17:38:41 by mokariou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,8 @@ int	ft_atoi(const char *str)
 	i = 0;
 	res = 0;
 	sign = 1;
+	if (!str)
+		return (0);
 	while (str[i] == 32 || (str[i] >= 9 && str[i] <= 13))
 		i++;
 	if (str[i] == '-')
@@ -41,24 +43,39 @@ int	ft_atoi(const char *str)
 	return ((int)(res * sign));
 }
 
-long	get_time(void)
+uint64_t	get_time(void)
 {
 	struct timeval	time;
 
 	if (gettimeofday(&time, NULL))
 		return (0);
-	return (long)((time.tv_sec * 1000) + (time.tv_usec / 1000));
+	return ((time.tv_sec * (uint64_t)1000) + (time.tv_usec / 1000));
 }
 
-void u_got_knocked_out(long long ms)
+void	u_got_knocked_out(long long ms)
 {
-    long long start = get_time() + ms;
+	unsigned long long	end_time;
 
-    //while (get_time() - start < ms)
-	long temp = get_time();
-    while (start > get_time())
+	end_time = get_time() + ms;
+	while (get_time() < end_time)
 	{
-		//printf("time left: %lld\n", start - get_time());
-        usleep(100);
-    }
+		usleep(500);
+	}
+}
+
+int	log_action(t_philosopher *philo, const char *action)
+{
+	long	current_time;
+
+	current_time = get_time();
+	pthread_mutex_lock(&philo->table->print_lock);
+	if (philo->table->stop_simulation == true)
+	{
+		pthread_mutex_unlock(&philo->table->print_lock);
+		return (1);
+	}
+	printf("%ldms Philosopher %d %s\n", (current_time - philo->start),
+		philo->id, action);
+	pthread_mutex_unlock(&philo->table->print_lock);
+	return (0);
 }
