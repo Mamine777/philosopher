@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philo.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mokariou <mokariou@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mokariou <mokariou@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/20 13:21:59 by mokariou          #+#    #+#             */
-/*   Updated: 2024/12/20 15:10:03 by mokariou         ###   ########.fr       */
+/*   Updated: 2024/12/20 18:50:31 by mokariou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,6 @@
 # include <stdlib.h>
 # include <sys/time.h>
 # include <unistd.h>
-
-struct s_table;
 
 typedef struct t_schedule
 {
@@ -45,7 +43,7 @@ typedef struct t_philo
 typedef struct s_table
 {
 	int				num_of_philos;
-	int 			stop_simulation;// died
+	int				stop_simulation;
 	int				all_ate;
 	long long		first_timestamp;
 	pthread_mutex_t	meal_check;
@@ -56,9 +54,13 @@ typedef struct s_table
 
 }					t_table;
 
-int	ft_atoi(const char *str);
-int	fill_table(t_table *table, char **av);
-long long	get_time(void);
-void	log_action(t_philo *philo, int id,char *str);
+int					ft_atoi(const char *str);
+int					fill_table(t_table *table, char **av);
+long long			get_time(void);
+void				log_action(t_philo *philo, int id, char *str);
+int					routine(t_table *table);
+void				u_got_knocked_out(long long time, t_philo *philo);
+void				rest_actions(t_philo *philo);
+void				take_forks(t_philo *philo);
 
 #endif

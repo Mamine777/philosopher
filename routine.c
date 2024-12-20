@@ -3,37 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   routine.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mokariou <mokariou@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mokariou <mokariou@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/20 14:29:19 by mokariou          #+#    #+#             */
-/*   Updated: 2024/12/20 15:49:06 by mokariou         ###   ########.fr       */
+/*   Updated: 2024/12/20 19:24:18 by mokariou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-void	take_forks(t_philo *philo)
-{
-	pthread_mutex_lock(&(philo->table->forks[philo->left_fork]));
-	log_action(philo, philo->id, "has taken a fork");
-	pthread_mutex_lock(&(philo->table->forks[philo->right_fork]));
-	log_action(philo, philo->id, "has taken a fork");
-	pthread_mutex_lock(&(philo->table->meal_check));
-	log_action(philo, philo->id, "is eating");
-	philo->last_meal = get_time();
-	pthread_mutex_unlock(&(philo->table->meal_check));
-	u_got_knocked_out(philo->schedule->eat_time, philo);
-	philo->x_meals++;
-	pthread_mutex_unlock(&(philo->table->forks[philo->left_fork]));
-	pthread_mutex_lock(&(philo->table->forks[philo->right_fork]));
-}
-
-void	rest_actions(t_philo *philo)
-{
-	log_action(philo, philo->id, "is sleeping");
-	u_got_knocked_out(philo->schedule->sleep_time, philo);
-	log_action(philo, philo->id, "is thinking");
-}
 void	*threads(void *arg)
 {
 	t_philo	*philo;
@@ -53,31 +31,42 @@ void	*threads(void *arg)
 	return (NULL);
 }
 
-void	guard_death(t_table *table)
+static void	check_philos_death(t_table *table)
 {
 	t_philo	*philo;
 	int		i;
 
 	philo = table->philos;
+	i = -1;
+	while (++i < table->num_of_philos && !table->stop_simulation)
+	{
+		pthread_mutex_lock(&(table->meal_check));
+		if (get_time() - philo[i].last_meal > table->schedule.time_to_die)
+		{
+			log_action(philo, i, "has died");
+			table->stop_simulation = 1;
+			pthread_mutex_unlock(&(table->meal_check));
+			break ;
+		}
+		pthread_mutex_unlock(&(table->meal_check));
+		usleep(100);
+	}
+}
+
+void	guard_death(t_table *table)
+{
+	int	i;
+
 	while (!table->all_ate)
 	{
-		i = -1;
-		while (++i, i < table->num_of_philos && !table->stop_simulation)
-		{
-			pthread_mutex_lock(&(table->meal_check));
-			if (get_time() - philo[i].last_meal > table->schedule.time_to_die)
-			{
-				log_action(philo, i, "has died");
-				break ;
-			}
-			pthread_mutex_unlock(&(table->meal_check));
-			usleep(100);
-		}
+		check_philos_death(table);
 		if (table->stop_simulation)
 			break ;
-		while (table->schedule.num_of_to_eat != -1 && i < table->num_of_philos && philo[i].x_meals >= table->schedule.num_of_to_eat)
+		i = 0;
+		while (table->schedule.num_of_to_eat != -1 && i < table->num_of_philos
+			&& table->philos[i].x_meals >= table->schedule.num_of_to_eat)
 			i++;
-		if (i == table->schedule.num_of_to_eat)
+		if (i == table->num_of_philos)
 			table->all_ate = 1;
 	}
 }
@@ -85,17 +74,17 @@ void	guard_death(t_table *table)
 void	destroy(t_table *table)
 {
 	int	i;
-	
+
 	i = -1;
 	while (++i, i < table->num_of_philos)
 	{
 		pthread_join(table->philos[i].thread_id, NULL);
-
 	}
 	i = -1;
 	while (++i < table->num_of_philos)
 		pthread_mutex_destroy(&(table->forks[i]));
 	pthread_mutex_destroy(&(table->print));
+	pthread_mutex_destroy(&(table->meal_check));
 }
 
 int	routine(t_table *table)
@@ -109,7 +98,12 @@ int	routine(t_table *table)
 	while (++i, i < table->num_of_philos)
 	{
 		if (pthread_create(&(philo[i].thread_id), NULL, threads, &(philo[i])))
+		{
+			table->stop_simulation = 1;
+			while (--i >= 0)
+				pthread_join(philo[i].thread_id, NULL);
 			return (1);
+		}
 		philo[i].last_meal = get_time();
 	}
 	guard_death(table);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mokariou <mokariou@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mokariou <mokariou@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/20 13:53:11 by mokariou          #+#    #+#             */
-/*   Updated: 2024/12/20 15:18:52 by mokariou         ###   ########.fr       */
+/*   Updated: 2024/12/20 18:50:02 by mokariou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,25 +49,21 @@ long long	get_time(void)
 	return ((t.tv_sec * 1000) + (t.tv_usec / 1000));
 }
 
-void	log_action(t_philo *philo, int id,char *str)
+void	log_action(t_philo *philo, int id, char *str)
 {
 	pthread_mutex_lock(&philo->table->print);
 	if (!philo->table->stop_simulation)
 	{
-		printf("%lld %d %s\n", get_time() - philo->table->first_timestamp, id + 1, str);
+		printf("%lld %d %s\n", get_time() - philo->table->first_timestamp, id,
+			str);
 	}
 	pthread_mutex_unlock(&philo->table->print);
 	return ;
 }
 
-long long	time_diff(long long past, long long pres)
-{
-	return (pres - past);
-}
-
 void	u_got_knocked_out(long long time, t_philo *philo)
 {
-	long long i;
+	long long	i;
 
 	i = get_time();
 	while (!philo->table->stop_simulation)
@@ -76,4 +72,11 @@ void	u_got_knocked_out(long long time, t_philo *philo)
 			break ;
 		usleep(50);
 	}
+}
+
+void	rest_actions(t_philo *philo)
+{
+	log_action(philo, philo->id, "is sleeping");
+	u_got_knocked_out(philo->schedule->sleep_time, philo);
+	log_action(philo, philo->id, "is thinking");
 }
